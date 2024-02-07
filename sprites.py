@@ -41,7 +41,7 @@ class Asteroid(pygame.sprite.Sprite):
             rot_rect.center = rot_image.get_rect().center
             rot_image = rot_image.subsurface(rot_rect).copy()
             self.image = rot_image
-            self.rotate.ticks = 3
+            self.rotate_ticks = 3
     def draw(self, screen):
         screen.blit(self.image, self.rect)
 
@@ -50,8 +50,8 @@ class Ship(pygame.sprite.Sprite):
         pygame.sprite.Sprite.__init__(self)
         self.config = config
         self.image = pygame.image.load(config.IMAGEPATHS['ship']).convert_alpha()
-        self.explode_image = pygame.image.load(config.IMAGEPATHS['ship_exploded']).convert_alpha
-        self.position = = {'x': random.randrange(-10, 918), 'y': random.randrange(-10, 520)}
+        self.explode_image = pygame.image.load(config.IMAGEPATHS['ship_exploded']).convert_alpha()
+        self.position = {'x': random.randrange(-10, 918), 'y': random.randrange(-10, 520)}
         self.rect = self.image.get_rect()
         self.rect.left, self.rect.top = self.position['x'], self.position['y']
         self.speed = {'x': 10, 'y': 5}
@@ -66,11 +66,11 @@ class Ship(pygame.sprite.Sprite):
         if direction == 'left':
             self.position['x'] = max(-self.speed['x'] + self.position['x'], - 10)
         elif direction == 'right':
-            self.position['x'] = max(self.speed['x'] + self.position['x'], 918)
+            self.position['x'] = min(self.speed['x'] + self.position['x'], 918)
         elif direction == 'up':
             self.position['y'] = max(-self.speed['y'] + self.position['y'], - 10)
         elif direction == 'down':
-            self.position['y'] = max(self.speed['y'] + self.position['y'], 520)
+            self.position['y'] = min(self.speed['y'] + self.position['y'], 520)
         self.rect.left, self.rect.top = self.position['x'], self.position['y']
     def draw(self, screen):
         screen.blit(self.image, self.rect)
